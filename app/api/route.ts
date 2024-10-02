@@ -1,12 +1,15 @@
 // app/api/route.ts
 import { NextRequest, NextResponse } from 'next/server';
+import { botConfig } from 'app/config/botConfig.ts';
 
 export async function POST(request: NextRequest) {
-  // Extract the request body
   const { services, config } = await request.json();
 
   if (!services || !config || !process.env.DAILY_BOTS_KEY) {
-    return NextResponse.json({ error: 'Services or config not found in request body' }, { status: 400 });
+    return NextResponse.json(
+      { error: 'Services or config not found in request body' },
+      { status: 400 }
+    );
   }
 
   const payload = {

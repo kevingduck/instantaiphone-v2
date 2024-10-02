@@ -1,5 +1,6 @@
 // app/api/dialin/route.ts
 import { NextRequest, NextResponse } from 'next/server';
+import { botConfig } from '../../config/botConfig';
 
 export async function POST(request: NextRequest) {
   const { test, callId, callDomain } = await request.json();
@@ -10,7 +11,10 @@ export async function POST(request: NextRequest) {
   }
 
   if (!callId || !callDomain || !process.env.DAILY_BOTS_KEY) {
-    return NextResponse.json({ error: 'callId and/or callDomain not found in request body' }, { status: 400 });
+    return NextResponse.json(
+      { error: 'callId and/or callDomain not found in request body' },
+      { status: 400 }
+    );
   }
 
   const payload = {
@@ -30,9 +34,7 @@ export async function POST(request: NextRequest) {
       deepgram: process.env.DEEPGRAM_API_KEY,
       // Add other API keys if necessary
     },
-    config: [
-      // Include your bot's configuration here (same as in the web interface)
-    ],
+    config: botConfig, // Reuse botConfig for consistency
   };
 
   try {
